@@ -25,7 +25,10 @@
     "//": "pnpm 10 n'exécute plus les scripts d'installation par défaut. esbuild en a besoin pour poser son binaire natif — sans quoi Vite ne démarre pas. La liste est volontairement close : on autorise ce qu'on a examiné, pas tout ce qui le demande.",
     "onlyBuiltDependencies": [
       "esbuild"
-    ]
+    ],
+    "overrides": {
+      "source-map-js@<1.2.2": "^1.2.2"
+    }
   },
   "dependencies": {
     "@floating-ui/dom": "^1.8.0",
