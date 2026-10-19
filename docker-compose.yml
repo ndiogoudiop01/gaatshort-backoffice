@@ -1,0 +1,30 @@
+# ==============================================================================
+#  Exécution LOCALE de l'image de production.
+#
+#  Le développement courant passe par `pnpm dev` (rechargement à chaud, proxy
+#  Vite). Ce fichier sert à vérifier ce que la CI construit vraiment : nginx,
+#  l'entrypoint, la configuration d'exécution et les en-têtes de sécurité — que
+#  le serveur de développement ne reproduit pas.
+# ==============================================================================
+services:
+  backoffice:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - '8080:80'
+    environment:
+      # `/api/v1` en relatif : en production, le back-office et l'API partagent
+      # l'origine (sous-domaine du tenant), ce qui fait fonctionner le résolveur
+      # de tenant par sous-domaine sans en-tête ni CORS.
+      VITE_API_BASE_URL: /api/v1
+      VITE_APP_NAME: 'Gaatshort — Back-office'
+      VITE_APP_ENV: staging
+      VITE_SHOW_ERROR_DETAILS: 'true'
+    healthcheck:
+      # Déclarée ici et non dans l'image : voir le commentaire du Dockerfile.
+      test: ['CMD', 'wget', '--spider', '-q', 'http://127.0.0.1/healthz']
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

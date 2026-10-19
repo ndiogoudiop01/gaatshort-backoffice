@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Back-office entièrement derrière authentification : on interdit explicitement
+         l'indexation, au cas où une instance serait exposée par erreur. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Gaatshort — Back-office</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!--
+      Configuration d'exécution, écrite par l'entrypoint du conteneur à partir
+      des variables d'environnement. Chargée AVANT le module applicatif, en
+      script classique (pas `type="module"`) pour être exécutée de façon
+      synchrone : un module serait différé et `config.ts` lirait `undefined`.
+
+      En développement, le fichier n'existe pas — d'où le 404 silencieux et
+      `onerror`. C'est voulu : `import.meta.env` suffit alors, et faire échouer
+      le démarrage parce qu'un fichier de production manque serait absurde.
+    -->
+    <script src="/config.js" onerror="this.remove()"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

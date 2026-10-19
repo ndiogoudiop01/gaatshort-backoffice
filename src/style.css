@@ -1,0 +1,61 @@
+/*
+ * L'ordre des couches est le contrat passé avec PrimeVue dans `main.ts`
+ * (`cssLayer.order`). Il doit être déclaré AVANT tout import, sinon le
+ * navigateur fixe l'ordre à la première occurrence rencontrée et Tailwind
+ * peut se retrouver à perdre contre le style des composants.
+ */
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+:root {
+  color-scheme: light dark;
+
+  /*
+   * Jetons de mouvement (BSG-10). Les courbes CSS natives sont trop molles
+   * pour une interface : `ease-out` pour ce qui entre ou sort, `ease-in-out`
+   * pour ce qui se déplace à l'écran. Jamais d'`ease-in` sur l'UI — il
+   * retarde précisément l'instant que l'œil regarde.
+   */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --duration-press: 120ms;
+  --duration-popover: 160ms;
+  --duration-panel: 220ms;
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    sans-serif;
+  /* Jetons PrimeVue : la couleur suit le thème du tenant sans être redéclarée ici. */
+  background-color: var(--p-surface-50);
+  color: var(--p-text-color);
+}
+
+[data-theme='dark'] body {
+  background-color: var(--p-surface-950);
+}
+
+/* Focus visible conservé : un back-office se navigue beaucoup au clavier,
+   et le retirer casse l'accessibilité pour un gain esthétique nul. */
+:focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: 2px;
+}

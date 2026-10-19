@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    /* `vitest/globals` : les tests sont typés comme le reste et passent dans le
+       même `typecheck`. Les exclure laisserait une partie du code — celle qui
+       décrit le contrat — compiler sans jamais être vérifiée. */
+    "types": ["vite/client", "vitest/globals"],
+
+    "jsx": "preserve",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+
+    /* Rigueur alignée sur le backend : `strict` seul laisse passer trop de choses
+       (index d'objet non vérifié, `any` implicite sur un catch, propriété
+       optionnelle assignée `undefined`). Ces quatre options supplémentaires sont
+       ce qui distingue « ça compile » de « ça tient ». */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "exactOptionalPropertyTypes": false,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@app/*": ["src/app/*"],
+      "@core/*": ["src/core/*"],
+      "@shared/*": ["src/shared/*"],
+      "@modules/*": ["src/modules/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue"]
+}

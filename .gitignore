@@ -1,0 +1,20 @@
+node_modules/
+dist/
+coverage/
+reports/
+.pnpm-store/
+
+# Variables locales : `.env.example` est la référence versionnée.
+.env
+.env.*
+!.env.example
+
+*.log
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.claude/*
+.agent/*
+skills-lock.json
+.agent/*

@@ -1,0 +1,4 @@
+# Scripts executes dans des conteneurs Linux : un CRLF venu de Windows casse
+# le shebang (`/bin/sh^M: not found`) et le conteneur ne demarre pas.
+*.sh   text eol=lf
+docker/nginx.conf text eol=lf
