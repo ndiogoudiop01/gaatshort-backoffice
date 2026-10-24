@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
@@ -23,6 +23,16 @@ const sourceUrl = ref('');
 const progress = ref<number | null>(null);
 const busy = ref(false);
 let abort: (() => void) | null = null;
+
+// Chaque ouverture repart de zéro : sans cela, le fichier choisi pour l'épisode précédent
+// restait sélectionné et pouvait être envoyé sur un autre épisode.
+watch(visible, (open) => {
+  if (!open) return;
+  mode.value = 'file';
+  file.value = null;
+  sourceUrl.value = '';
+  progress.value = null;
+});
 
 function pick(e: Event): void {
   file.value = (e.target as HTMLInputElement).files?.[0] ?? null;
