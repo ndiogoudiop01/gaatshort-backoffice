@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
+import Message from 'primevue/message';
 import InputNumber from 'primevue/inputnumber';
 import InputText from 'primevue/inputtext';
 import { useApiError } from '@shared/composables/use-api-error';
 import { catalogApi } from '../catalog.api';
-import type { Episode } from '../types';
+import { effectiveFreeEpisodes } from '../pricing';
+import type { Episode, SeriesDetail } from '../types';
 
 /** Titres, prix particulier et sous-titres d'un épisode. */
-const props = defineProps<{ episode: Episode | null }>();
+const props = defineProps<{ episode: Episode | null; series?: SeriesDetail | null }>();
 const visible = defineModel<boolean>('visible', { required: true });
 const emit = defineEmits<{ done: [] }>();
 const { t } = useI18n();
@@ -23,9 +25,27 @@ const subFr = ref('');
 const subEn = ref('');
 const busy = ref(false);
 
+/** Pourquoi un prix saisi ici peut ne pas s'appliquer (même règle que l'API). */
+const priceNotice = computed(() => {
+  const e = props.episode;
+  const s = props.series;
+  if (!e || !s) return null;
+  if (e.number <= effectiveFreeEpisodes(s))
+    return t('catalog.episodes.freeNotice', { n: effectiveFreeEpisodes(s) });
+  const brand = s.tenantSeries?.episodePriceCoinsOverride;
+  if (brand !== null && brand !== undefined)
+    return t('catalog.episodes.brandNotice', { price: brand });
+  return null;
+});
+
+/**
+ * Formulaire rempli à CHAQUE ouverture (et pas seulement au changement d'épisode) : rouvrir
+ * le même épisode après « Annuler » montre ses vraies valeurs, pas la saisie abandonnée.
+ */
 watch(
-  () => props.episode,
-  (e) => {
+  () => [props.episode, visible.value] as const,
+  ([e, open]) => {
+    if (!open) return;
     titleFr.value = e?.titleFr ?? '';
     titleEn.value = e?.titleEn ?? '';
     price.value = e?.priceCoinsOverride ?? null;
@@ -88,6 +108,9 @@ async function save(): Promise<void> {
           :placeholder="t('catalog.episodes.priceInherited')"
         />
       </label>
+      <Message v-if="priceNotice" severity="warn" :closable="false" data-testid="price-notice">{{
+        priceNotice
+      }}</Message>
       <label class="text-sm font-medium"
         >{{ t('catalog.episodes.subtitlesFr')
         }}<InputText v-model="subFr" placeholder="https://…/fr.vtt" class="mt-1 w-full"

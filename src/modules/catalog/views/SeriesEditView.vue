@@ -22,6 +22,7 @@ import EpisodeDialog from '../components/EpisodeDialog.vue';
 import { catalogApi } from '../catalog.api';
 import { formatDuration } from '../video-upload';
 import type { Episode, Genre, SeriesDetail } from '../types';
+import { effectivePrice } from '../pricing';
 
 /** BO-03 — fiche série : informations, tarification, licences, épisodes et vidéos. */
 const props = defineProps<{ id: string }>();
@@ -427,7 +428,7 @@ onBeforeUnmount(() => timer && clearInterval(timer));
             <template #body="{ data }">
               {{ data.titleFr || t('catalog.episodes.untitled', { n: data.number }) }}
               <span
-                v-if="data.number <= series.freeEpisodes"
+                v-if="effectivePrice(series, data).isFree"
                 class="ml-2 rounded bg-green-100 px-1.5 text-xs text-green-800"
                 >{{ t('catalog.episodes.free') }}</span
               >
@@ -447,11 +448,18 @@ onBeforeUnmount(() => timer && clearInterval(timer));
             }}</template></Column
           >
           <Column :header="t('catalog.episodes.columns.price')">
-            <template #body="{ data }">{{
-              data.number <= series.freeEpisodes
-                ? '—'
-                : `${data.priceCoinsOverride ?? series.episodePriceCoins} ${t('catalog.coins')}`
-            }}</template>
+            <template #body="{ data }">
+              <template v-if="effectivePrice(series, data).isFree">—</template>
+              <template v-else>
+                {{ effectivePrice(series, data).priceCoins }} {{ t('catalog.coins') }}
+                <span
+                  v-if="effectivePrice(series, data).source === 'brand'"
+                  class="ml-1 text-xs text-surface-500"
+                  :title="t('catalog.episodes.brandPriceHint')"
+                  >({{ t('catalog.episodes.brandPrice') }})</span
+                >
+              </template>
+            </template>
           </Column>
           <Column :header="t('catalog.episodes.columns.subtitles')"
             ><template #body="{ data }">{{ subtitleLocales(data) }}</template></Column
@@ -519,7 +527,12 @@ onBeforeUnmount(() => timer && clearInterval(timer));
       </section>
 
       <VideoDialog v-model:visible="videoOpen" :episode="videoFor" @done="reloadSeries" />
-      <EpisodeDialog v-model:visible="editOpen" :episode="editFor" @done="reloadSeries" />
+      <EpisodeDialog
+        v-model:visible="editOpen"
+        :episode="editFor"
+        :series="series"
+        @done="reloadSeries"
+      />
     </template>
   </div>
 </template>
