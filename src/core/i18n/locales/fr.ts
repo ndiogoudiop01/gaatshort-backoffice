@@ -284,6 +284,12 @@ export default {
       titleEn: 'Titre (anglais)',
       priceOverride: 'Prix particulier (crédits)',
       priceInherited: 'Prix de la série',
+      brandPrice: 'vitrine',
+      brandPriceHint: 'Prix imposé par la vitrine de la marque : il remplace le prix de l’épisode.',
+      freeNotice:
+        'Cet épisode fait partie des {n} épisodes gratuits : un prix saisi ici ne s’appliquera que s’il sort de la gratuité.',
+      brandNotice:
+        'La vitrine de la marque impose {price} crédits par épisode pour cette série : ce prix l’emporte sur celui saisi ici. Modifiez-le dans « Vitrine de la marque ».',
       subtitlesFr: 'Sous-titres français (URL WebVTT)',
       subtitlesEn: 'Sous-titres anglais (URL WebVTT)',
       publish: 'Publier',

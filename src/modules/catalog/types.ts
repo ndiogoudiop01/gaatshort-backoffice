@@ -85,7 +85,12 @@ export interface SeriesDetail {
   genres: Genre[];
   licenses: License[];
   episodes: Episode[];
-  tenantSeries: { status: TenantSeriesStatus; featured: boolean } | null;
+  tenantSeries: {
+    status: TenantSeriesStatus;
+    featured: boolean;
+    freeEpisodesOverride?: number | null;
+    episodePriceCoinsOverride?: number | null;
+  } | null;
 }
 
 export interface SeriesInput {
