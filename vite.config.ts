@@ -1,12 +1,33 @@
 import { fileURLToPath, URL } from 'node:url';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig, loadEnv, type Plugin } from 'vite';
 import vue from '@vitejs/plugin-vue';
+
+/**
+ * En développement, `/config.js` (écrit par l'entrypoint du conteneur en
+ * production) n'existe pas : le navigateur journalisait un 404 à chaque
+ * chargement. On sert un script vide à la place — `config.ts` retombe alors
+ * sur `import.meta.env`, exactement comme avant, mais sans bruit en console.
+ * `apply: 'serve'` : rien n'est ajouté au build de production.
+ */
+function devRuntimeConfig(): Plugin {
+  return {
+    name: 'gaatshort:dev-runtime-config',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use('/config.js', (_req, res) => {
+        res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+        res.setHeader('Cache-Control', 'no-store');
+        res.end('/* dev : configuration lue depuis import.meta.env */\n');
+      });
+    },
+  };
+}
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_');
 
   return {
-    plugins: [vue()],
+    plugins: [vue(), devRuntimeConfig()],
 
     resolve: {
       alias: {
