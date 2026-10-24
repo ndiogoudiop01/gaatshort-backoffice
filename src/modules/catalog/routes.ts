@@ -46,6 +46,18 @@ export const catalogRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'import',
+    name: 'catalog-import',
+    component: () => import('./views/ImportView.vue'),
+    meta: {
+      titleKey: 'nav.import',
+      icon: 'pi pi-upload',
+      section: 'catalogue',
+      nav: true,
+      permissions: ['catalog:write', 'media:upload'],
+    },
+  },
+  {
     path: 'vitrine',
     name: 'storefront',
     component: () => import('./views/StorefrontView.vue'),

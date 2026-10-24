@@ -129,6 +129,7 @@ describe('Navigation et droits', () => {
       'series',
       'genres',
       'licenses',
+      'catalog-import',
       'storefront',
       'packs',
       'orders',
