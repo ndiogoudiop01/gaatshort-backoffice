@@ -315,7 +315,7 @@ export default {
         'Importer {rows} ligne(s) ? Les séries créées restent en brouillon ; les vidéos sont téléchargées par le service vidéo.',
       dryRunNotice: 'Essai à blanc : rien n’a été écrit. Vérifiez le rapport puis lancez l’import.',
       doneNotice: 'Import terminé.',
-      tooBig: 'Fichier trop volumineux (900 Ko au maximum, environ 3 000 lignes) : découpez-le.',
+      tooBig: 'Fichier trop volumineux (900 Ko et 1 000 lignes au maximum) : découpez-le.',
       changedSinceAnalysis: 'Le contenu a changé depuis l’analyse : analysez-le de nouveau.',
       onlyErrors: 'Erreurs seulement',
       totals: {
