@@ -119,10 +119,10 @@ describe('permissionsGuard', () => {
   }
 
   it('exige TOUTES les permissions, comme le backend', () => {
-    signIn(['MANAGER'], ['application:read']);
+    signIn(['CONTENT_MANAGER'], ['catalog:read']);
 
-    expect(check({ permissions: ['application:read'] })).toBe(true);
-    expect(check({ permissions: ['application:read', 'application:transition'] })).toEqual({
+    expect(check({ permissions: ['catalog:read'] })).toBe(true);
+    expect(check({ permissions: ['catalog:read', 'catalog:publish'] })).toEqual({
       name: 'forbidden',
       query: { from: '/x' },
     });
@@ -139,16 +139,16 @@ describe('permissionsGuard', () => {
     // La confusion coûterait cher : une session valide mais sans droit
     // rebondirait indéfiniment sur l'écran de connexion, qui la renverrait
     // aussitôt vers l'écran refusé.
-    signIn(['MANAGER'], []);
+    signIn(['CONTENT_MANAGER'], []);
     expect(check({ permissions: ['user:manage'] })).toEqual({
       name: 'forbidden',
       query: { from: '/x' },
     });
   });
 
-  it('ferme tout à un PARTNER, qui n’a aucune permission au catalogue', () => {
-    signIn(['PARTNER'], []);
-    expect(check({ permissions: ['partner:read'] })).toEqual({
+  it('ferme tout à un VIEWER, qui n’a aucune permission back-office', () => {
+    signIn(['VIEWER'], []);
+    expect(check({ permissions: ['catalog:read'] })).toEqual({
       name: 'forbidden',
       query: { from: '/x' },
     });

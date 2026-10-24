@@ -47,7 +47,7 @@ const navItems = computed(() => {
 });
 
 const sections = computed(() => {
-  const order: NavSection[] = ['pilotage', 'candidats', 'partenaires', 'contenu', 'plateforme'];
+  const order: NavSection[] = ['pilotage', 'catalogue', 'monetisation', 'audience', 'plateforme'];
   return order
     .map((section) => ({
       key: section,
@@ -84,7 +84,7 @@ const primaryRole = computed(() => {
         <div
           class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-contrast"
         >
-          <i class="pi pi-bolt text-base" />
+          <i class="pi pi-video text-base" />
         </div>
         <div v-if="sidebarOpen" class="min-w-0">
           <p class="truncate text-sm font-bold leading-tight">{{ config.app.name }}</p>

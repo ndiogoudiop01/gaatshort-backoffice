@@ -101,7 +101,7 @@ describe('aucun mapping codé en dur', () => {
   ) as Record<string, string>;
 
   it('le module ne cite pas de clés de permission', () => {
-    const allowed = new Set(['user:manage', 'tenant:manage', 'application:read:own']);
+    const allowed = new Set(['user:manage', 'tenant:manage']);
     const offenders = Object.entries(sources).flatMap(([path, code]) =>
       [...code.matchAll(/'([a-z]+:[a-z]+(?::[a-z]+)?)'/g)]
         .map((m) => m[1]!)

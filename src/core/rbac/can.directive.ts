@@ -5,7 +5,7 @@ import type { Permission } from './permissions';
 type CanValue = Permission | readonly Permission[];
 
 /**
- * `v-can="PERMISSIONS.POOL_EXPORT"` retire l'élément du DOM si la permission
+ * `v-can="PERMISSIONS.WALLET_ADJUST"` retire l'élément du DOM si la permission
  * manque.
  *
  * On RETIRE plutôt qu'on ne masque (`display: none`) : un bouton masqué reste

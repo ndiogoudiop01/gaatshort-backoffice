@@ -17,6 +17,6 @@ declare module 'vue-router' {
     /** Apparaît dans la navigation latérale. */
     nav?: boolean;
     /** Regroupement dans la navigation. */
-    section?: 'pilotage' | 'candidats' | 'partenaires' | 'contenu' | 'plateforme';
+    section?: 'pilotage' | 'catalogue' | 'monetisation' | 'audience' | 'plateforme';
   }
 }
