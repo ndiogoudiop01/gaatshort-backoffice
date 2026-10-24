@@ -137,3 +137,31 @@ export interface UploadTicket {
   asset: MediaAsset;
   upload: { endpoint: string; headers: Record<string, string> } | null;
 }
+
+export type ImportRowAction = 'CREATED' | 'UPDATED' | 'UNCHANGED' | 'ERROR';
+export type ImportVideoAction = 'QUEUED' | 'ALREADY_PRESENT' | 'NONE' | 'ERROR';
+
+export interface ImportReport {
+  dryRun: boolean;
+  totals: {
+    rows: number;
+    seriesCreated: number;
+    seriesUpdated: number;
+    episodesCreated: number;
+    episodesUpdated: number;
+    videosQueued: number;
+    videosAlreadyPresent: number;
+    errors: number;
+  };
+  series: { slug: string; action: ImportRowAction; id?: string; message?: string }[];
+  rows: {
+    line: number;
+    seriesSlug: string;
+    episodeNumber: number;
+    episode: ImportRowAction;
+    video: ImportVideoAction;
+    message?: string;
+  }[];
+  errors: { line: number; message: string }[];
+  warnings: { line: number; message: string }[];
+}
