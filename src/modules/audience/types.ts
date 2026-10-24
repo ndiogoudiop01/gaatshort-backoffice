@@ -24,10 +24,32 @@ export interface ViewerRow {
 }
 
 export interface ViewerDetail {
-  account: { id: string; phoneE164: string | null; countryCode: string | null; locale: string; status: string; createdAt: string };
+  account: {
+    id: string;
+    phoneE164: string | null;
+    countryCode: string | null;
+    locale: string;
+    status: string;
+    createdAt: string;
+  };
   membership: { id: string; status: string; createdAt: string; lastLoginAt: string | null };
   balance: { paidBalance: number; bonusBalance: number; total: number };
-  ledger: { id: string; kind: string; delta: number; paidDelta: number; bonusDelta: number; reason: string | null; createdAt: string }[];
-  orders: { id: string; reference: string; status: string; amountMinor: number; currencyCode: string; createdAt: string }[];
+  ledger: {
+    id: string;
+    kind: string;
+    delta: number;
+    paidDelta: number;
+    bonusDelta: number;
+    reason: string | null;
+    createdAt: string;
+  }[];
+  orders: {
+    id: string;
+    reference: string;
+    status: string;
+    amountMinor: number;
+    currencyCode: string;
+    createdAt: string;
+  }[];
   unlockedEpisodes: number;
 }

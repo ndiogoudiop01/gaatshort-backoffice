@@ -29,8 +29,21 @@ export interface Order {
 }
 
 export interface OrderDetail extends Order {
-  history: { id: string; fromStatus: OrderStatus | null; toStatus: OrderStatus; cause: string; createdAt: string }[];
-  events: { id: string; eventType: string | null; signatureValid: boolean; processingStatus: string; processingError: string | null; receivedAt: string }[];
+  history: {
+    id: string;
+    fromStatus: OrderStatus | null;
+    toStatus: OrderStatus;
+    cause: string;
+    createdAt: string;
+  }[];
+  events: {
+    id: string;
+    eventType: string | null;
+    signatureValid: boolean;
+    processingStatus: string;
+    processingError: string | null;
+    receivedAt: string;
+  }[];
 }
 
 export interface PackInput {

@@ -4,7 +4,10 @@ import { useI18n } from 'vue-i18n';
 import Tag from 'primevue/tag';
 
 /** Statut d'une série, d'un épisode, d'une vidéo ou de la diffusion par la marque. */
-const props = defineProps<{ status: string; kind?: 'series' | 'episode' | 'media' | 'storefront' }>();
+const props = defineProps<{
+  status: string;
+  kind?: 'series' | 'episode' | 'media' | 'storefront';
+}>();
 const { t } = useI18n();
 
 const severity = computed(() => {

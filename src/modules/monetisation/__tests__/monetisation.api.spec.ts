@@ -2,7 +2,10 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { rawClient } from '@core/http/client';
 import { monetisationApi } from '../monetisation.api';
 
-const envelope = <T>(data: T) => ({ data: { success: true, data, requestId: 'r', timestamp: 't' }, status: 200 });
+const envelope = <T>(data: T) => ({
+  data: { success: true, data, requestId: 'r', timestamp: 't' },
+  status: 200,
+});
 
 afterEach(() => vi.restoreAllMocks());
 
@@ -13,4 +16,3 @@ describe('monetisationApi', () => {
     expect(patch).toHaveBeenCalledWith('/admin/packs/p', { coins: 10 }, undefined);
   });
 });
-

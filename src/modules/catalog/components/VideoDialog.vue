@@ -59,10 +59,28 @@ function close(): void {
 </script>
 
 <template>
-  <Dialog v-model:visible="visible" modal :header="t('catalog.video.title', { n: episode?.number ?? '' })" class="w-[32rem]" :closable="!busy">
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :header="t('catalog.video.title', { n: episode?.number ?? '' })"
+    class="w-[32rem]"
+    :closable="!busy"
+  >
     <div class="mb-4 flex gap-2">
-      <Button size="small" :outlined="mode !== 'file'" :label="t('catalog.video.fromFile')" icon="pi pi-upload" @click="mode = 'file'" />
-      <Button size="small" :outlined="mode !== 'url'" :label="t('catalog.video.fromUrl')" icon="pi pi-link" @click="mode = 'url'" />
+      <Button
+        size="small"
+        :outlined="mode !== 'file'"
+        :label="t('catalog.video.fromFile')"
+        icon="pi pi-upload"
+        @click="mode = 'file'"
+      />
+      <Button
+        size="small"
+        :outlined="mode !== 'url'"
+        :label="t('catalog.video.fromUrl')"
+        icon="pi pi-link"
+        @click="mode = 'url'"
+      />
     </div>
     <div v-if="mode === 'file'" class="flex flex-col gap-2">
       <input type="file" accept="video/*" data-testid="video-file" @change="pick" />
@@ -70,12 +88,22 @@ function close(): void {
       <ProgressBar v-if="progress !== null" :value="progress" />
     </div>
     <div v-else class="flex flex-col gap-2">
-      <InputText v-model="sourceUrl" placeholder="https://…/episode-01.mp4" data-testid="video-url" />
+      <InputText
+        v-model="sourceUrl"
+        placeholder="https://…/episode-01.mp4"
+        data-testid="video-url"
+      />
       <p class="text-xs text-surface-500">{{ t('catalog.video.urlHint') }}</p>
     </div>
     <template #footer>
       <Button text :label="t('common.cancel')" @click="close" />
-      <Button :label="t('catalog.video.submit')" icon="pi pi-check" :loading="busy" :disabled="mode === 'file' ? !file : !/^https?:\/\//.test(sourceUrl)" @click="submit" />
+      <Button
+        :label="t('catalog.video.submit')"
+        icon="pi pi-check"
+        :loading="busy"
+        :disabled="mode === 'file' ? !file : !/^https?:\/\//.test(sourceUrl)"
+        @click="submit"
+      />
     </template>
   </Dialog>
 </template>
