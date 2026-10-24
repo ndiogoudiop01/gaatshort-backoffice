@@ -1,10 +1,10 @@
-export const ROLES = ['CANDIDATE', 'PARTNER', 'MANAGER', 'ADMIN', 'SUPER_ADMIN'] as const;
+export const ROLES = ['VIEWER', 'CONTENT_MANAGER', 'SUPPORT', 'ADMIN', 'SUPER_ADMIN'] as const;
 export type Role = (typeof ROLES)[number];
 
 /**
  * Corps de `POST /auth/login`. Le back-office se connecte par e-mail et mot
- * de passe — les canaux OTP / lien magique restent réservés au parcours
- * public des candidats et ne sont plus proposés ici.
+ * de passe — les canaux OTP restent réservés aux spectateurs
+ * de l'application et ne sont plus proposés ici.
  */
 export interface LoginRequest {
   readonly email: string;
