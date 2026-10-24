@@ -2,6 +2,7 @@ import { api } from '@core/http';
 import type {
   Episode,
   Genre,
+  ImportReport,
   License,
   LicenseInput,
   MediaAsset,
@@ -82,6 +83,10 @@ export const catalogApi = {
   updateLicense: (id: string, l: Partial<LicenseInput>) =>
     api.patch<License>(`/admin/licenses/${enc(id)}`, compact(l)),
   deleteLicense: (id: string) => api.delete<void>(`/admin/licenses/${enc(id)}`),
+
+  // Import en lot (BO-17) : essai à blanc par défaut
+  importCatalog: (csv: string, dryRun: boolean) =>
+    api.post<ImportReport>('/admin/catalog/import', { csv, dryRun }),
 
   // Vitrine de la marque courante
   storefront: (q: { q?: string; status?: TenantSeriesStatus } = {}) =>
