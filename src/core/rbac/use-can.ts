@@ -29,9 +29,8 @@ export function useCan() {
   }
 
   /**
-   * Un ADMIN n'a PAS `application:read:own` — les routes candidat lui sont
-   * fermées, et c'est voulu. Ce raccourci évite qu'on « corrige » cette
-   * surprise en ajoutant la permission au rôle côté backend.
+   * Administrateur de marque OU de plateforme : seul le SUPER_ADMIN a
+   * `tenant:manage`, mais tous deux pilotent la marque courante.
    */
   const isPlatformAdmin = computed(() => hasRole('ADMIN', 'SUPER_ADMIN'));
 

@@ -23,18 +23,18 @@ describe('useCan', () => {
   beforeEach(() => setActivePinia(createPinia()));
 
   it('exige TOUTES les permissions, comme PermissionsGuard', () => {
-    signIn(['MANAGER'], ['application:read', 'application:transition']);
+    signIn(['CONTENT_MANAGER'], ['catalog:read', 'catalog:write']);
     const { can } = useCan();
 
-    expect(can('application:read')).toBe(true);
-    expect(can('application:read', 'application:transition')).toBe(true);
-    expect(can('application:read', 'application:preselect')).toBe(false);
+    expect(can('catalog:read')).toBe(true);
+    expect(can('catalog:read', 'catalog:write')).toBe(true);
+    expect(can('catalog:read', 'catalog:publish')).toBe(false);
   });
 
   it('considère qu’aucune exigence vaut autorisation', () => {
     // Cohérent avec le backend : une route sans `@RequirePermissions` n'exige
     // rien de plus que d'être authentifié.
-    signIn(['MANAGER'], []);
+    signIn(['CONTENT_MANAGER'], []);
     expect(useCan().can()).toBe(true);
     expect(useCan().hasRole()).toBe(true);
   });
@@ -47,19 +47,19 @@ describe('useCan', () => {
     expect(hasRole('SUPER_ADMIN')).toBe(false);
   });
 
-  it('ne donne rien à un PARTNER, qui n’a aucune permission au catalogue', () => {
-    signIn(['PARTNER'], []);
+  it('ne donne rien à un VIEWER, qui n’a aucune permission back-office', () => {
+    signIn(['VIEWER'], []);
     const { can, isPlatformAdmin } = useCan();
 
-    expect(can('partner:read')).toBe(false);
+    expect(can('catalog:read')).toBe(false);
     expect(isPlatformAdmin.value).toBe(false);
   });
 
-  it('ne prête pas application:read:own à un ADMIN', () => {
-    // Le backend ne la lui donne pas : les routes candidat lui sont fermées,
-    // et c'est voulu. Ce test existe pour qu'on ne « corrige » pas la surprise.
-    signIn(['ADMIN'], ['application:read', 'metrics:read', 'user:manage']);
-    expect(useCan().can(PERMISSIONS.APPLICATION_READ_OWN)).toBe(false);
+  it('ne prête pas tenant:manage à un ADMIN de marque', () => {
+    // Le backend ne la lui donne pas : l'administration des marques est réservée
+    // au SUPER_ADMIN. Ce test existe pour qu'on ne « corrige » pas la surprise.
+    signIn(['ADMIN'], ['catalog:read', 'metrics:read', 'user:manage']);
+    expect(useCan().can(PERMISSIONS.TENANT_MANAGE)).toBe(false);
     expect(useCan().isPlatformAdmin.value).toBe(true);
   });
 });
@@ -69,10 +69,10 @@ describe('useCanRef', () => {
 
   it('suit un changement de session', () => {
     const auth = useAuthStore();
-    const allowed = useCanRef('pool:export');
+    const allowed = useCanRef('wallet:adjust');
 
     expect(allowed.value).toBe(false);
-    signIn(['ADMIN'], ['pool:export']);
+    signIn(['ADMIN'], ['wallet:adjust']);
     expect(allowed.value).toBe(true);
 
     auth.clearSession();
@@ -90,8 +90,8 @@ describe('v-can', () => {
   });
 
   it('retire l’élément — il ne le masque pas', () => {
-    signIn(['MANAGER'], []);
-    const wrapper = mount(host, { props: { need: 'pool:export' } });
+    signIn(['CONTENT_MANAGER'], []);
+    const wrapper = mount(host, { props: { need: 'wallet:adjust' } });
 
     // Masquer laisserait le bouton atteignable au clavier et annoncé par un
     // lecteur d'écran : une promesse d'action que l'API refuserait.

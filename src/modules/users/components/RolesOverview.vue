@@ -34,8 +34,8 @@ const findings = computed(() => {
   const admin = props.roles.find((r) => r.key === 'ADMIN');
   if (
     admin &&
-    props.catalog.some((p) => p.key === 'application:read:own') &&
-    !admin.permissions.includes('application:read:own')
+    props.catalog.some((p) => p.key === 'tenant:manage') &&
+    !admin.permissions.includes('tenant:manage')
   ) {
     list.push({ key: 'adminNoOwn', params: {} });
   }

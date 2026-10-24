@@ -3,12 +3,15 @@ import type { Permission } from '@core/rbac';
 import type { Role } from '@core/auth/types';
 import { tenantRoutes } from './tenants/routes';
 import { userRoutes } from './users/routes';
+import { catalogRoutes } from './catalog/routes';
+import { monetisationRoutes } from './monetisation/routes';
+import { audienceRoutes, dashboardRoutes } from './audience/routes';
 
 /**
  * Catalogue des modules du back-office.
  *
- * `users` et `tenants` sont repris du socle et servent de patron. Les écrans Gaatshort
- * (04-UI-UX-Design §11 : BO-02 à BO-17) arrivent phase par phase. Pour un nouveau module, on le
+ * `users` et `tenants` viennent du socle ; `audience`, `catalog` et `monetisation` sont
+ * les écrans Gaatshort (04-UI-UX-Design §11). Pour un nouveau module, on le
  * DÉCLARE d'abord ici dans `PLACEHOLDERS` — route,
  * permissions, place dans le menu — avant d'écrire son écran. Ce n'est pas un raccourci : la matrice de
  * droits est la partie qu'on se trompe le plus facilement, et la déclarer maintenant permet
@@ -51,6 +54,10 @@ function toPlaceholderRoute(module: PlaceholderModule): RouteRecordRaw {
  * d'accueil.
  */
 export const moduleRoutes: RouteRecordRaw[] = [
+  ...dashboardRoutes,
+  ...catalogRoutes,
+  ...monetisationRoutes,
+  ...audienceRoutes,
   ...userRoutes,
   ...tenantRoutes,
   ...PLACEHOLDERS.map(toPlaceholderRoute),
